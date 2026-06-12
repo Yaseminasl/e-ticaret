@@ -6,6 +6,7 @@ import { useCart } from "@/hooks/useCart";
 const navLinks = [
   { href: "/", label: "Ana Sayfa" },
   { href: "/products", label: "Ürünler" },
+  { href: "/orders", label: "Siparişlerim" },
 ];
 
 export function Header() {

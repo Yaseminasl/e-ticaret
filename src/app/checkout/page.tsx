@@ -4,6 +4,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { products } from "@/lib/products";
 import { useCart } from "@/hooks/useCart";
+import type { Order } from "@/types/order";
 
 export default function CheckoutPage() {
   const { items, clearCart } = useCart();
@@ -78,11 +79,41 @@ export default function CheckoutPage() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    const formData = new FormData(event.currentTarget);
     const generatedOrderNumber = `ORD-${new Date().getFullYear()}-${Math.floor(
       Math.random() * 100000,
     )
       .toString()
       .padStart(5, "0")}`;
+
+    const newOrder: Order = {
+      id: crypto.randomUUID(),
+      orderNumber: generatedOrderNumber,
+      totalAmount: totalPrice,
+      status: "processing",
+      shippingName: String(formData.get("shippingName")),
+      shippingAddress: String(formData.get("shippingAddress")),
+      shippingPhone: String(formData.get("shippingPhone")),
+      paymentMethod: "credit_card",
+      items: cartProducts.map((product) => ({
+        productId: product.id,
+        name: product.name,
+        quantity: product.quantity,
+        unitPrice: product.price,
+        lineTotal: product.lineTotal,
+      })),
+      createdAt: new Date().toISOString(),
+    };
+
+    const storedOrders = window.localStorage.getItem("orders");
+    const previousOrders = storedOrders
+      ? (JSON.parse(storedOrders) as Order[])
+      : [];
+
+    window.localStorage.setItem(
+      "orders",
+      JSON.stringify([newOrder, ...previousOrders]),
+    );
 
     setOrderNumber(generatedOrderNumber);
     setIsOrderComplete(true);
