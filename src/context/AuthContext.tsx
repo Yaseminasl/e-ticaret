@@ -55,6 +55,22 @@ function subscribeToStorage(callback: () => void) {
   };
 }
 
+function subscribeToClient(callback: () => void) {
+  const timeoutId = window.setTimeout(callback, 0);
+
+  return () => {
+    window.clearTimeout(timeoutId);
+  };
+}
+
+function getClientReadySnapshot() {
+  return true;
+}
+
+function getServerReadySnapshot() {
+  return false;
+}
+
 function getStoredUsers(): StoredUser[] {
   const storedUsers = window.localStorage.getItem(USERS_STORAGE_KEY);
 
@@ -89,8 +105,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     () => "",
   );
 
+  const isClientReady = useSyncExternalStore(
+    subscribeToClient,
+    getClientReadySnapshot,
+    getServerReadySnapshot,
+  );
+
   const user = useMemo(() => {
-    if (typeof window === "undefined") {
+    if (!isClientReady || typeof window === "undefined") {
       return null;
     }
 
@@ -110,7 +132,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     password;
 
     return publicUser;
-  }, [storageSnapshot]);
+  }, [isClientReady, storageSnapshot]);
 
   const register = useCallback((input: RegisterInput) => {
     const users = getStoredUsers();

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
 
 const navLinks = [
@@ -11,6 +12,7 @@ const navLinks = [
 
 export function Header() {
   const { totalItems } = useCart();
+  const { user, logout } = useAuth();
 
   return (
     <header className="border-b border-slate-200 bg-white">
@@ -34,16 +36,33 @@ export function Header() {
             Sepet ({totalItems})
           </Link>
 
-          <Link href="/login" className="hover:text-emerald-700">
-            Giriş
-          </Link>
+          {user ? (
+            <>
+              <Link href="/profile" className="hover:text-emerald-700">
+                Profil
+              </Link>
+              <button
+                type="button"
+                onClick={logout}
+                className="rounded-md bg-slate-950 px-4 py-2 text-white hover:bg-slate-800"
+              >
+                Çıkış Yap
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="hover:text-emerald-700">
+                Giriş
+              </Link>
 
-          <Link
-            href="/register"
-            className="rounded-md bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700"
-          >
-            Kayıt Ol
-          </Link>
+              <Link
+                href="/register"
+                className="rounded-md bg-emerald-600 px-4 py-2 text-white hover:bg-emerald-700"
+              >
+                Kayıt Ol
+              </Link>
+            </>
+          )}
         </div>
       </nav>
     </header>
