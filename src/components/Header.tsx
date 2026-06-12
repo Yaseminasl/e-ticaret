@@ -1,12 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { useCart } from "@/hooks/useCart";
 
 const navLinks = [
   { href: "/", label: "Ana Sayfa" },
   { href: "/products", label: "Ürünler" },
-  { href: "/cart", label: "Sepet" },
 ];
 
 export function Header() {
+  const { totalItems } = useCart();
+
   return (
     <header className="border-b border-slate-200 bg-white">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -24,6 +28,10 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+
+          <Link href="/cart" className="hover:text-emerald-700">
+            Sepet ({totalItems})
+          </Link>
 
           <Link href="/login" className="hover:text-emerald-700">
             Giriş

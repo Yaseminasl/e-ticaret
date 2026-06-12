@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { products } from "@/lib/products";
+import { AddToCartButton } from "@/components/AddToCartButton";
 
 type ProductDetailPageProps = {
   params: Promise<{
@@ -61,12 +62,7 @@ export default async function ProductDetailPage({
             </span>
           </p>
 
-          <button
-            type="button"
-            className="mt-8 w-full rounded-md bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700 sm:w-auto"
-          >
-            Sepete Ekle
-          </button>
+          <AddToCartButton productId={product.id} />
         </div>
       </section>
     </main>
