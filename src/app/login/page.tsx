@@ -2,11 +2,13 @@
 
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get("redirect") ?? "/profile";
   const { login } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -22,7 +24,7 @@ export default function LoginPage() {
         password: String(formData.get("password")),
       });
 
-      router.push("/profile");
+      router.push(redirectPath);
     } catch (error) {
       setErrorMessage(
         error instanceof Error

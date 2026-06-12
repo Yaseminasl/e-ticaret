@@ -89,8 +89,10 @@ function setStoredUsers(users: StoredUser[]) {
 function setSessionUserId(userId: string | null) {
   if (userId) {
     window.localStorage.setItem(SESSION_STORAGE_KEY, userId);
+    document.cookie = `${SESSION_STORAGE_KEY}=${userId}; path=/; max-age=604800; SameSite=Lax`;
   } else {
     window.localStorage.removeItem(SESSION_STORAGE_KEY);
+    document.cookie = `${SESSION_STORAGE_KEY}=; path=/; max-age=0; SameSite=Lax`;
   }
 
   window.dispatchEvent(
