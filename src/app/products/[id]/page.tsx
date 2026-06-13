@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AddToCartButton } from "@/components/AddToCartButton";
 import { getProductById } from "@/lib/products";
+import Image from "next/image";
 
 type ProductDetailPageProps = {
   params: Promise<{
@@ -23,9 +24,11 @@ export default async function ProductDetailPage({
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <section className="mx-auto grid max-w-6xl gap-10 px-6 py-12 lg:grid-cols-2">
         <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-          <img
+          <Image
             src={`${product.imageUrl}?auto=format&fit=crop&w=1200&q=80`}
             alt={product.name}
+            width={1200}
+            height={800}
             className="h-full min-h-96 w-full object-cover"
           />
         </div>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Product } from "@/types/product";
+import Image from "next/image";
 
 type ProductCardProps = {
   product: Product;
@@ -12,9 +13,11 @@ export function ProductCard({
 }: ProductCardProps) {
   return (
     <article className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-      <img
+      <Image
         src={`${product.imageUrl}?auto=format&fit=crop&w=800&q=80`}
         alt={product.name}
+        width={800}
+        height={480}
         className="h-48 w-full object-cover"
       />
 

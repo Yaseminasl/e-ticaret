@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 const protectedRoutes = ["/cart", "/checkout", "/orders", "/profile"];
 const authRoutes = ["/login", "/register"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const sessionUserId = request.cookies.get("sessionUserId")?.value;
   const pathname = request.nextUrl.pathname;
 

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
 import type { Product } from "@/types/product";
+import Image from "next/image";
 
 type CartProduct = Product & {
   quantity: number;
@@ -95,9 +96,11 @@ export default function CartPage() {
                   key={product.id}
                   className="grid gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-[140px_1fr]"
                 >
-                  <img
+                  <Image
                     src={`${product.imageUrl}?auto=format&fit=crop&w=400&q=80`}
                     alt={product.name}
+                    width={400}
+                    height={300}
                     className="h-32 w-full rounded-md object-cover"
                   />
 
