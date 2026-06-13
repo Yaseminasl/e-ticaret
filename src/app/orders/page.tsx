@@ -84,6 +84,12 @@ export default function OrdersPage() {
                         currency: "TRY",
                       })}
                     </p>
+                    <Link
+                      href={`/orders/${order.id}`}
+                      className="mt-3 inline-flex rounded-md bg-slate-950 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+                    >
+                      Detay
+                    </Link>
                   </div>
                 </div>
 
