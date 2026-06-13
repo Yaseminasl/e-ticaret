@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { products } from "@/lib/products";
 import { AddToCartButton } from "@/components/AddToCartButton";
+import { getProductById } from "@/lib/products";
 
 type ProductDetailPageProps = {
   params: Promise<{
@@ -13,7 +13,7 @@ export default async function ProductDetailPage({
   params,
 }: ProductDetailPageProps) {
   const { id } = await params;
-  const product = products.find((item) => item.id === Number(id));
+  const product = getProductById(Number(id));
 
   if (!product) {
     notFound();

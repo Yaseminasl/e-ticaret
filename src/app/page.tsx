@@ -1,9 +1,9 @@
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/lib/products";
-
-const featuredProducts = products.filter((product) => product.isFeatured);
+import { getFeaturedProducts } from "@/lib/products";
 
 export default function Home() {
+  const featuredProducts = getFeaturedProducts();
+
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <section className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-16">

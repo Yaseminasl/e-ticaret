@@ -1,71 +1,60 @@
+import { db } from "@/lib/database";
 import type { Product } from "@/types/product";
 
-export const products: Product[] = [
-  {
-    id: 1,
-    name: "Kablosuz Kulaklık",
-    slug: "kablosuz-kulaklik",
-    category: "Elektronik",
-    description:
-      "Gürültü azaltma özellikli, uzun pil ömürlü kablosuz kulaklık.",
-    price: 1299.99,
-    stock: 18,
-    imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
-    isFeatured: true,
-  },
-  {
-    id: 2,
-    name: "Spor Ayakkabı",
-    slug: "spor-ayakkabi",
-    category: "Giyim",
-    description: "Günlük kullanım ve yürüyüş için hafif spor ayakkabı.",
-    price: 2199.99,
-    stock: 12,
-    imageUrl: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-    isFeatured: true,
-  },
-  {
-    id: 3,
-    name: "Akıllı Saat",
-    slug: "akilli-saat",
-    category: "Aksesuar",
-    description: "Adım, kalp ritmi ve bildirim takibi yapabilen akıllı saat.",
-    price: 3499.99,
-    stock: 9,
-    imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
-    isFeatured: true,
-  },
-  {
-    id: 4,
-    name: "Laptop Çantası",
-    slug: "laptop-cantasi",
-    category: "Aksesuar",
-    description: "Suya dayanıklı, çok bölmeli laptop taşıma çantası.",
-    price: 799.99,
-    stock: 25,
-    imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62",
-    isFeatured: false,
-  },
-  {
-    id: 5,
-    name: "Bluetooth Hoparlör",
-    slug: "bluetooth-hoparlor",
-    category: "Elektronik",
-    description: "Taşınabilir, güçlü ses veren bluetooth hoparlör.",
-    price: 999.99,
-    stock: 15,
-    imageUrl: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1",
-    isFeatured: false,
-  },
-  {
-    id: 6,
-    name: "Basic Tişört",
-    slug: "basic-tisort",
-    category: "Giyim",
-    description: "Pamuklu kumaştan üretilmiş rahat kesim basic tişört.",
-    price: 349.99,
-    stock: 40,
-    imageUrl: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
-    isFeatured: false,
-  },
-];
+type ProductRow = {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  price: number;
+  stock: number;
+  image_url: string;
+  category: string;
+  is_featured: number;
+};
+
+function mapProduct(row: ProductRow): Product {
+  return {
+    id: row.id,
+    name: row.name,
+    slug: row.slug,
+    category: row.category,
+    description: row.description,
+    price: row.price,
+    stock: row.stock,
+    imageUrl: row.image_url,
+    isFeatured: Boolean(row.is_featured),
+  };
+}
+
+export function getProducts() {
+  const rows = db
+    .prepare(
+      `
+      SELECT
+        products.id,
+        products.name,
+        products.slug,
+        products.description,
+        products.price,
+        products.stock,
+        products.image_url,
+        products.is_featured,
+        categories.name AS category
+      FROM products
+      JOIN categories ON categories.id = products.category_id
+      ORDER BY products.id ASC
+      `,
+    )
+    .all() as ProductRow[];
+
+  return rows.map(mapProduct);
+}
+
+export function getFeaturedProducts() {
+  return getProducts().filter((product) => product.isFeatured);
+}
+
+export function getProductById(id: number) {
+  return getProducts().find((product) => product.id === id);
+}

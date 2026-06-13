@@ -85,9 +85,9 @@ db.exec(`
     (4, 'Laptop Çantası', 'laptop-cantasi', 'Suya dayanıklı, çok bölmeli laptop taşıma çantası.', 799.99, 25, 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62', 3, 0),
     (5, 'Bluetooth Hoparlör', 'bluetooth-hoparlor', 'Taşınabilir, güçlü ses veren bluetooth hoparlör.', 999.99, 15, 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1', 1, 0),
     (6, 'Basic Tişört', 'basic-tisort', 'Pamuklu kumaştan üretilmiş rahat kesim basic tişört.', 349.99, 40, 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab', 2, 0),
-    (7, 'Tablet Standı', 'tablet-standi', 'Masaüstü kullanım için ayarlanabilir tablet ve telefon standı.', 449.99, 22, 'https://images.unsplash.com/photo-1587829741301-dc798b83add3', 1, 0),
+    (7, 'Tablet Standı', 'tablet-standi', 'Masaüstü kullanım için ayarlanabilir tablet ve telefon standı.', 449.99, 22, 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0', 1, 0),    
     (8, 'Sırt Çantası', 'sirt-cantasi', 'Günlük kullanım için geniş hacimli sırt çantası.', 899.99, 17, 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62', 3, 0),
-    (9, 'Koşu Taytı', 'kosu-tayti', 'Esnek kumaşlı spor ve koşu taytı.', 599.99, 30, 'https://images.unsplash.com/photo-1506629905607-d405b7a30db9', 2, 0),
+    (9, 'Koşu Taytı', 'kosu-tayti', 'Esnek kumaşlı spor ve koşu taytı.', 599.99, 30, 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b', 2, 0),    
     (10, 'Mekanik Klavye', 'mekanik-klavye', 'RGB aydınlatmalı kompakt mekanik klavye.', 1899.99, 11, 'https://images.unsplash.com/photo-1587829741301-dc798b83add3', 1, 0);
 `);
 

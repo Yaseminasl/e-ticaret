@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { products } from "@/lib/products";
+import { getProducts } from "@/lib/products";
 import { useCart } from "@/hooks/useCart";
 
 export default function CartPage() {
   const { items, updateQuantity, removeFromCart } = useCart();
+  const products = getProducts();
 
   const cartProducts = items
     .map((item) => {
