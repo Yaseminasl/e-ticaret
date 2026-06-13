@@ -1,31 +1,52 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { getProducts } from "@/lib/products";
 import { useCart } from "@/hooks/useCart";
+import type { Product } from "@/types/product";
+
+type CartProduct = Product & {
+  quantity: number;
+  lineTotal: number;
+};
 
 export default function CartPage() {
   const { items, updateQuantity, removeFromCart } = useCart();
-  const products = getProducts();
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const cartProducts = items
-    .map((item) => {
-      const product = products.find(
-        (productItem) => productItem.id === item.productId,
-      );
+  useEffect(() => {
+    async function loadProducts() {
+      const response = await fetch("/api/products");
+      const data = (await response.json()) as { products: Product[] };
+      setProducts(data.products);
+    }
 
-      if (!product) {
-        return null;
-      }
+    void loadProducts();
+  }, []);
 
-      return {
-        ...product,
-        quantity: item.quantity,
-        lineTotal: product.price * item.quantity,
-      };
-    })
-    .filter((product) => product !== null);
+  const cartProducts = useMemo(
+    () =>
+      items
+        .map((item) => {
+          const product = products.find(
+            (productItem) => productItem.id === item.productId,
+          );
 
+          if (!product) {
+            return null;
+          }
+
+          return {
+            ...product,
+            quantity: item.quantity,
+            lineTotal: product.price * item.quantity,
+          };
+        })
+        .filter((product): product is CartProduct => product !== null),
+    [items, products],
+  );
+
+  const isLoadingProducts = items.length > 0 && products.length === 0;
   const totalItems = cartProducts.reduce(
     (total, product) => total + product.quantity,
     0,
@@ -49,7 +70,11 @@ export default function CartPage() {
           </p>
         </div>
 
-        {cartProducts.length === 0 ? (
+        {isLoadingProducts ? (
+          <div className="rounded-lg border border-slate-200 bg-white p-10 text-center text-slate-600">
+            Sepet yükleniyor...
+          </div>
+        ) : cartProducts.length === 0 ? (
           <div className="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center">
             <h2 className="text-xl font-semibold">Sepetin boş</h2>
             <p className="mt-2 text-slate-600">

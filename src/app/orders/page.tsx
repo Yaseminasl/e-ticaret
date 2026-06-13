@@ -1,43 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import type { Order } from "@/types/order";
 
-const ORDERS_STORAGE_KEY = "orders";
-
-function getOrdersSnapshot() {
-  if (typeof window === "undefined") {
-    return "[]";
-  }
-
-  return window.localStorage.getItem(ORDERS_STORAGE_KEY) ?? "[]";
-}
-
-function subscribeToOrders(callback: () => void) {
-  window.addEventListener("storage", callback);
-
-  return () => {
-    window.removeEventListener("storage", callback);
-  };
-}
-
-function parseOrders(value: string): Order[] {
-  try {
-    return JSON.parse(value) as Order[];
-  } catch {
-    return [];
-  }
-}
-
 export default function OrdersPage() {
-  const ordersSnapshot = useSyncExternalStore(
-    subscribeToOrders,
-    getOrdersSnapshot,
-    () => "[]",
-  );
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const orders = useMemo(() => parseOrders(ordersSnapshot), [ordersSnapshot]);
+  useEffect(() => {
+    async function loadOrders() {
+      const response = await fetch("/api/orders");
+
+      if (response.ok) {
+        const data = (await response.json()) as { orders: Order[] };
+        setOrders(data.orders);
+      }
+
+      setIsLoading(false);
+    }
+
+    void loadOrders();
+  }, []);
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
@@ -53,7 +37,11 @@ export default function OrdersPage() {
           </p>
         </div>
 
-        {orders.length === 0 ? (
+        {isLoading ? (
+          <div className="rounded-lg border border-slate-200 bg-white p-10 text-center text-slate-600">
+            Siparişler yükleniyor...
+          </div>
+        ) : orders.length === 0 ? (
           <div className="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center">
             <h2 className="text-xl font-semibold">Henüz siparişin yok</h2>
             <p className="mt-2 text-slate-600">

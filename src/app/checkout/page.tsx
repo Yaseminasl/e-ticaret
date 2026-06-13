@@ -1,19 +1,35 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
-import { products } from "@/lib/products";
 import { useCart } from "@/hooks/useCart";
-import type { Order } from "@/types/order";
+import type { Product } from "@/types/product";
+
+type CartProduct = Product & {
+  quantity: number;
+  lineTotal: number;
+};
 
 export default function CheckoutPage() {
   const { items, clearCart } = useCart();
+  const [products, setProducts] = useState<Product[]>([]);
+
   const [isOrderComplete, setIsOrderComplete] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
   const [phone, setPhone] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
+
+  useEffect(() => {
+    async function loadProducts() {
+      const response = await fetch("/api/products");
+      const data = (await response.json()) as { products: Product[] };
+      setProducts(data.products);
+    }
+
+    void loadProducts();
+  }, []);
 
   function onlyDigits(value: string) {
     return value.replace(/\D/g, "");
@@ -67,16 +83,18 @@ export default function CheckoutPage() {
             lineTotal: product.price * item.quantity,
           };
         })
-        .filter((product) => product !== null),
-    [items],
+        .filter((product): product is CartProduct => product !== null),
+    [items, products],
   );
+
+  const isLoadingProducts = items.length > 0 && products.length === 0;
 
   const totalPrice = cartProducts.reduce(
     (total, product) => total + product.lineTotal,
     0,
   );
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -86,34 +104,31 @@ export default function CheckoutPage() {
       .toString()
       .padStart(5, "0")}`;
 
-    const newOrder: Order = {
-      id: crypto.randomUUID(),
-      orderNumber: generatedOrderNumber,
-      totalAmount: totalPrice,
-      status: "processing",
-      shippingName: String(formData.get("shippingName")),
-      shippingAddress: String(formData.get("shippingAddress")),
-      shippingPhone: String(formData.get("shippingPhone")),
-      paymentMethod: "credit_card",
-      items: cartProducts.map((product) => ({
-        productId: product.id,
-        name: product.name,
-        quantity: product.quantity,
-        unitPrice: product.price,
-        lineTotal: product.lineTotal,
-      })),
-      createdAt: new Date().toISOString(),
-    };
+    const response = await fetch("/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderNumber: generatedOrderNumber,
+        totalAmount: totalPrice,
+        shippingName: String(formData.get("shippingName")),
+        shippingAddress: String(formData.get("shippingAddress")),
+        shippingPhone: String(formData.get("shippingPhone")),
+        paymentMethod: "credit_card",
+        items: cartProducts.map((product) => ({
+          productId: product.id,
+          name: product.name,
+          quantity: product.quantity,
+          unitPrice: product.price,
+          lineTotal: product.lineTotal,
+        })),
+      }),
+    });
 
-    const storedOrders = window.localStorage.getItem("orders");
-    const previousOrders = storedOrders
-      ? (JSON.parse(storedOrders) as Order[])
-      : [];
-
-    window.localStorage.setItem(
-      "orders",
-      JSON.stringify([newOrder, ...previousOrders]),
-    );
+    if (!response.ok) {
+      return;
+    }
 
     setOrderNumber(generatedOrderNumber);
     setIsOrderComplete(true);
@@ -152,6 +167,18 @@ export default function CheckoutPage() {
                 Siparişlerim
               </Link>
             </div>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  if (isLoadingProducts) {
+    return (
+      <main className="min-h-screen bg-slate-50 text-slate-950">
+        <section className="mx-auto max-w-3xl px-6 py-16">
+          <div className="rounded-lg border border-slate-200 bg-white p-10 text-center text-slate-600">
+            Checkout yükleniyor...
           </div>
         </section>
       </main>
