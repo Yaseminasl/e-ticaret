@@ -3,8 +3,9 @@
 import {
   createContext,
   useCallback,
+  useEffect,
   useMemo,
-  useSyncExternalStore,
+  useState,
   type ReactNode,
 } from "react";
 import type { User } from "@/types/user";
@@ -20,175 +21,92 @@ type LoginInput = {
   password: string;
 };
 
-type StoredUser = User & {
-  password: string;
-};
-
 type AuthContextValue = {
   user: User | null;
-  register: (input: RegisterInput) => void;
-  login: (input: LoginInput) => void;
-  logout: () => void;
+  isLoading: boolean;
+  register: (input: RegisterInput) => Promise<void>;
+  login: (input: LoginInput) => Promise<void>;
+  logout: () => Promise<void>;
 };
 
-const USERS_STORAGE_KEY = "users";
-const SESSION_STORAGE_KEY = "sessionUserId";
+type AuthResponse = {
+  user: User | null;
+  message?: string;
+};
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
 
-function getStorageSnapshot() {
-  if (typeof window === "undefined") {
-    return "";
+async function parseAuthResponse(response: Response) {
+  const data = (await response.json()) as AuthResponse;
+
+  if (!response.ok) {
+    throw new Error(data.message ?? "İşlem sırasında bir hata oluştu.");
   }
 
-  return [
-    window.localStorage.getItem(USERS_STORAGE_KEY) ?? "[]",
-    window.localStorage.getItem(SESSION_STORAGE_KEY) ?? "",
-  ].join("|");
-}
-
-function subscribeToStorage(callback: () => void) {
-  window.addEventListener("storage", callback);
-
-  return () => {
-    window.removeEventListener("storage", callback);
-  };
-}
-
-function subscribeToClient(callback: () => void) {
-  const timeoutId = window.setTimeout(callback, 0);
-
-  return () => {
-    window.clearTimeout(timeoutId);
-  };
-}
-
-function getClientReadySnapshot() {
-  return true;
-}
-
-function getServerReadySnapshot() {
-  return false;
-}
-
-function getStoredUsers(): StoredUser[] {
-  const storedUsers = window.localStorage.getItem(USERS_STORAGE_KEY);
-
-  if (!storedUsers) {
-    return [];
-  }
-
-  return JSON.parse(storedUsers) as StoredUser[];
-}
-
-function setStoredUsers(users: StoredUser[]) {
-  window.localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
-  window.dispatchEvent(new StorageEvent("storage", { key: USERS_STORAGE_KEY }));
-}
-
-function setSessionUserId(userId: string | null) {
-  if (userId) {
-    window.localStorage.setItem(SESSION_STORAGE_KEY, userId);
-    document.cookie = `${SESSION_STORAGE_KEY}=${userId}; path=/; max-age=604800; SameSite=Lax`;
-  } else {
-    window.localStorage.removeItem(SESSION_STORAGE_KEY);
-    document.cookie = `${SESSION_STORAGE_KEY}=; path=/; max-age=0; SameSite=Lax`;
-  }
-
-  window.dispatchEvent(
-    new StorageEvent("storage", { key: SESSION_STORAGE_KEY }),
-  );
+  return data;
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const storageSnapshot = useSyncExternalStore(
-    subscribeToStorage,
-    getStorageSnapshot,
-    () => "",
-  );
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const isClientReady = useSyncExternalStore(
-    subscribeToClient,
-    getClientReadySnapshot,
-    getServerReadySnapshot,
-  );
-
-  const user = useMemo(() => {
-    if (!isClientReady || typeof window === "undefined") {
-      return null;
+  useEffect(() => {
+    async function loadCurrentUser() {
+      try {
+        const response = await fetch("/api/auth/me");
+        const data = await parseAuthResponse(response);
+        setUser(data.user);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
-    storageSnapshot;
-
-    const users = getStoredUsers();
-    const sessionUserId = window.localStorage.getItem(SESSION_STORAGE_KEY);
-    const currentUser = users.find(
-      (storedUser) => storedUser.id === sessionUserId,
-    );
-
-    if (!currentUser) {
-      return null;
-    }
-
-    const { password, ...publicUser } = currentUser;
-    password;
-
-    return publicUser;
-  }, [isClientReady, storageSnapshot]);
-
-  const register = useCallback((input: RegisterInput) => {
-    const users = getStoredUsers();
-    const normalizedEmail = input.email.trim().toLocaleLowerCase("tr-TR");
-    const existingUser = users.find(
-      (userItem) => userItem.email === normalizedEmail,
-    );
-
-    if (existingUser) {
-      throw new Error("Bu e-posta adresi zaten kayıtlı.");
-    }
-
-    const newUser: StoredUser = {
-      id: crypto.randomUUID(),
-      name: input.name.trim(),
-      email: normalizedEmail,
-      password: input.password,
-      role: "user",
-      createdAt: new Date().toISOString(),
-    };
-
-    setStoredUsers([...users, newUser]);
-    setSessionUserId(newUser.id);
+    void loadCurrentUser();
   }, []);
 
-  const login = useCallback((input: LoginInput) => {
-    const users = getStoredUsers();
-    const normalizedEmail = input.email.trim().toLocaleLowerCase("tr-TR");
+  const register = useCallback(async (input: RegisterInput) => {
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
 
-    const existingUser = users.find(
-      (userItem) =>
-        userItem.email === normalizedEmail &&
-        userItem.password === input.password,
-    );
-
-    if (!existingUser) {
-      throw new Error("E-posta veya şifre hatalı.");
-    }
-
-    setSessionUserId(existingUser.id);
+    const data = await parseAuthResponse(response);
+    setUser(data.user);
   }, []);
 
-  const logout = useCallback(() => {
-    setSessionUserId(null);
+  const login = useCallback(async (input: LoginInput) => {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+
+    const data = await parseAuthResponse(response);
+    setUser(data.user);
+  }, []);
+
+  const logout = useCallback(async () => {
+    await fetch("/api/auth/logout", {
+      method: "POST",
+    });
+
+    setUser(null);
   }, []);
 
   const value = useMemo(
     () => ({
       user,
+      isLoading,
       register,
       login,
       logout,
     }),
-    [user, register, login, logout],
+    [user, isLoading, register, login, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -12,14 +12,14 @@ export default function LoginPage() {
   const { login } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrorMessage("");
 
     const formData = new FormData(event.currentTarget);
 
     try {
-      login({
+      await login({
         email: String(formData.get("email")),
         password: String(formData.get("password")),
       });

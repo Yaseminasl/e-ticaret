@@ -10,14 +10,14 @@ export default function RegisterPage() {
   const { register } = useAuth();
   const [errorMessage, setErrorMessage] = useState("");
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrorMessage("");
 
     const formData = new FormData(event.currentTarget);
 
     try {
-      register({
+      await register({
         name: String(formData.get("name")),
         email: String(formData.get("email")),
         password: String(formData.get("password")),

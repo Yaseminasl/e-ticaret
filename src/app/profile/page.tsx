@@ -55,7 +55,9 @@ export default function ProfilePage() {
 
           <button
             type="button"
-            onClick={logout}
+            onClick={() => {
+              void logout();
+            }}
             className="mt-6 rounded-md bg-slate-950 px-5 py-3 font-semibold text-white hover:bg-slate-800"
           >
             Çıkış Yap

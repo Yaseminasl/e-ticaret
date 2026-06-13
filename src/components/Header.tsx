@@ -43,7 +43,9 @@ export function Header() {
               </Link>
               <button
                 type="button"
-                onClick={logout}
+                onClick={() => {
+                  void logout();
+                }}
                 className="rounded-md bg-slate-950 px-4 py-2 text-white hover:bg-slate-800"
               >
                 Çıkış Yap
