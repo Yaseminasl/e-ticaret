@@ -47,7 +47,7 @@ export function ProductCard({
 
   return (
     <article
-      className={`overflow-hidden rounded-lg border bg-gradient-to-br shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-none dark:bg-slate-900 ${theme.card}`}
+      className={`overflow-hidden rounded-lg border bg-gradient-to-br shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-[#5A1F2D] dark:bg-none dark:bg-[#161114] ${theme.card}`}
     >
       <Image
         src={getProductImageUrl(
@@ -62,7 +62,7 @@ export function ProductCard({
 
       <div className="p-5">
         <p
-          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold dark:bg-slate-800 dark:text-slate-200 ${theme.pill}`}
+          className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold dark:bg-[#2A1218] dark:text-[#F5D0D8] ${theme.pill}`}
         >
           {product.category}
         </p>
@@ -72,7 +72,7 @@ export function ProductCard({
         </h2>
 
         {showDescription ? (
-          <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+          <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-[#E5E7EB]">
             {product.description}
           </p>
         ) : null}
@@ -87,7 +87,7 @@ export function ProductCard({
 
           <Link
             href={`/products/${product.id}`}
-            className={`rounded-md bg-gradient-to-r px-4 py-2 text-sm font-semibold text-white shadow-sm transition ${theme.button} dark:from-slate-100 dark:to-slate-300 dark:text-slate-950 dark:hover:from-white dark:hover:to-slate-200`}
+            className={`rounded-md bg-gradient-to-r px-4 py-2 text-sm font-semibold text-white shadow-sm transition ${theme.button} dark:from-[#7F1D1D] dark:to-[#BE123C] dark:text-white dark:hover:from-[#991B1B] dark:hover:to-[#E11D48]`}
           >
             Detay
           </Link>

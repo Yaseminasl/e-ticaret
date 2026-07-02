@@ -207,3 +207,88 @@ body {
 .dark textarea::placeholder {
   color: #949ca7;
 }
+
+.dark body {
+  background:
+    radial-gradient(
+      circle at 12% 8%,
+      rgba(127, 29, 29, 0.34),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 90% 18%,
+      rgba(88, 28, 28, 0.28),
+      transparent 26rem
+    ),
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(39, 39, 42, 0.9),
+      transparent 30rem
+    ),
+    linear-gradient(135deg, #050505 0%, #111113 42%, #1a0f12 72%, #260f14 100%);
+  color: #f8fafc;
+}
+
+.dark main,
+.dark .bg-slate-50 {
+  background:
+    radial-gradient(
+      circle at 12% 10%,
+      rgba(127, 29, 29, 0.32),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 86% 14%,
+      rgba(80, 20, 35, 0.28),
+      transparent 26rem
+    ),
+    radial-gradient(
+      circle at 72% 86%,
+      rgba(63, 63, 70, 0.45),
+      transparent 28rem
+    ),
+    linear-gradient(135deg, #050505 0%, #111113 44%, #1a0f12 72%, #260f14 100%);
+  color: #f8fafc;
+}
+
+.dark header {
+  border-color: #3f1d25;
+  background: linear-gradient(90deg, #050505 0%, #141416 45%, #2a0f17 100%);
+}
+
+.dark .bg-white {
+  background-color: rgba(24, 24, 27, 0.88);
+  backdrop-filter: blur(10px);
+}
+
+.dark .text-slate-950 {
+  color: #f8fafc;
+}
+
+.dark .text-slate-700,
+.dark .text-slate-600,
+.dark .text-slate-500 {
+  color: #d1d5db;
+}
+
+.dark .border-slate-200,
+.dark .border-slate-300 {
+  border-color: #4a232d;
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  border-color: #4a232d;
+  background-color: #0b0b0c;
+  color: #f8fafc;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #9ca3af;
+}
+
+.dark .shadow-sm {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+}
