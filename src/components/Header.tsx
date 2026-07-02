@@ -10,7 +10,9 @@ const navLinks = [
   { href: "/products", label: "Ürünler" },
   { href: "/orders", label: "Siparişlerim" },
   { href: "/faq", label: "SSS" },
+  { href: "/contact", label: "İletişim" },
 ];
+
 export function Header() {
   const { totalItems } = useCart();
   const { user, logout } = useAuth();
