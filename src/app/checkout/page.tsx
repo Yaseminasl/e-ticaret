@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
 import type { Product } from "@/types/product";
+import { CheckoutSteps } from "@/components/CheckoutSteps";
 
 type CartProduct = Product & {
   quantity: number;
@@ -139,6 +140,8 @@ export default function CheckoutPage() {
     return (
       <main className="min-h-screen bg-slate-50 text-slate-950">
         <section className="mx-auto max-w-3xl px-6 py-16">
+          <CheckoutSteps currentStep={4} />
+
           <div className="rounded-lg border border-slate-200 bg-white p-8 text-center shadow-sm">
             <p className="text-sm font-semibold uppercase text-emerald-700">
               Sipariş Alındı
@@ -218,6 +221,8 @@ export default function CheckoutPage() {
             Teslimat bilgilerini gir ve simüle ödeme ile siparişini oluştur.
           </p>
         </div>
+
+        <CheckoutSteps currentStep={3} />
 
         <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
           <form
