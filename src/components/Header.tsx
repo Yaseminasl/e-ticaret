@@ -59,7 +59,7 @@ export function Header() {
                 onClick={() => {
                   void logout();
                 }}
-                className="rounded-md bg-gradient-to-r from-[#7F1D1D] via-[#BE123C] to-[#DB2777] px-4 py-2 font-bold text-white shadow-sm transition hover:brightness-110"
+                className="rounded-md bg-gradient-to-r from-pink-500 via-violet-500 to-sky-500 px-4 py-2 font-semibold text-white shadow-sm transition hover:brightness-105 dark:from-[#7F1D1D] dark:via-[#BE123C] dark:to-[#DB2777]"
               >
                 Çıkış Yap
               </button>
@@ -72,7 +72,7 @@ export function Header() {
 
               <Link
                 href="/register"
-                className="rounded-md bg-gradient-to-r from-emerald-400 via-sky-400 to-violet-400 px-4 py-2 font-semibold text-white shadow-sm transition hover:brightness-105 dark:from-[#7F1D1D] dark:via-[#BE123C] dark:to-[#DB2777]"
+                className="rounded-md bg-gradient-to-r from-pink-500 via-violet-500 to-sky-500 px-4 py-2 font-semibold text-white shadow-sm transition hover:brightness-105 dark:from-[#7F1D1D] dark:via-[#BE123C] dark:to-[#DB2777]"
               >
                 Kayıt Ol
               </Link>

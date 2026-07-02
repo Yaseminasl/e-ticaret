@@ -1,6 +1,7 @@
 import { HomeSlider } from "@/components/HomeSlider";
 import { ProductCard } from "@/components/ProductCard";
 import { getFeaturedProducts } from "@/lib/products";
+import { CategoryShowcase } from "@/components/CategoryShowcase";
 
 export default function Home() {
   const featuredProducts = getFeaturedProducts();
@@ -9,6 +10,7 @@ export default function Home() {
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <section className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12">
         <HomeSlider />
+        <CategoryShowcase />
 
         <div>
           <p className="text-sm font-extrabold uppercase tracking-wide text-[#007ea8] dark:text-[#F5D0D8]">

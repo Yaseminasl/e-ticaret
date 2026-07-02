@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import type { Product } from "@/types/product";
 
@@ -11,6 +12,9 @@ type ProductFiltersProps = {
 const allCategoriesLabel = "Tümü";
 
 export function ProductFilters({ products }: ProductFiltersProps) {
+  const searchParams = useSearchParams();
+  const categoryFromUrl = searchParams.get("category") ?? allCategoriesLabel;
+
   const categories = useMemo(
     () => [
       allCategoriesLabel,
@@ -19,8 +23,12 @@ export function ProductFilters({ products }: ProductFiltersProps) {
     [products],
   );
 
+  const initialCategory = categories.includes(categoryFromUrl)
+    ? categoryFromUrl
+    : allCategoriesLabel;
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(allCategoriesLabel);
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [sortOption, setSortOption] = useState("default");
 
   const filteredProducts = useMemo(() => {
@@ -39,12 +47,17 @@ export function ProductFilters({ products }: ProductFiltersProps) {
     });
 
     return [...filtered].sort((firstProduct, secondProduct) => {
-      if (sortOption === "price-asc")
+      if (sortOption === "price-asc") {
         return firstProduct.price - secondProduct.price;
-      if (sortOption === "price-desc")
+      }
+
+      if (sortOption === "price-desc") {
         return secondProduct.price - firstProduct.price;
-      if (sortOption === "name-asc")
+      }
+
+      if (sortOption === "name-asc") {
         return firstProduct.name.localeCompare(secondProduct.name, "tr");
+      }
 
       return firstProduct.id - secondProduct.id;
     });
