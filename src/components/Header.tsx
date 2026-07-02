@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/orders", label: "Siparişlerim" },
   { href: "/faq", label: "SSS" },
   { href: "/contact", label: "İletişim" },
+  { href: "/terms", label: "Şartlar" },
 ];
 
 export function Header() {
