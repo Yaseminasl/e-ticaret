@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Product } from "@/types/product";
 import Image from "next/image";
+import { getProductImageUrl } from "@/lib/image-url";
 
 type ProductCardProps = {
   product: Product;
@@ -14,7 +15,10 @@ export function ProductCard({
   return (
     <article className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
       <Image
-        src={`${product.imageUrl}?auto=format&fit=crop&w=800&q=80`}
+        src={getProductImageUrl(
+          product.imageUrl,
+          "auto=format&fit=crop&w=800&q=80",
+        )}
         alt={product.name}
         width={800}
         height={480}

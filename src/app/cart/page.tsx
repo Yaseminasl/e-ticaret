@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCart } from "@/hooks/useCart";
 import type { Product } from "@/types/product";
 import Image from "next/image";
+import { getProductImageUrl } from "@/lib/image-url";
 
 type CartProduct = Product & {
   quantity: number;
@@ -97,7 +98,10 @@ export default function CartPage() {
                   className="grid gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-[140px_1fr]"
                 >
                   <Image
-                    src={`${product.imageUrl}?auto=format&fit=crop&w=400&q=80`}
+                    src={getProductImageUrl(
+                      product.imageUrl,
+                      "auto=format&fit=crop&w=400&q=80",
+                    )}
                     alt={product.name}
                     width={400}
                     height={300}

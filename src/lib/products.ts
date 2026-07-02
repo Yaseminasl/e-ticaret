@@ -1,5 +1,11 @@
 import { db } from "@/lib/database";
-import type { Product } from "@/types/product";
+import type {
+  Product,
+  ProductDetailInfo,
+  ProductImage,
+  ProductReview,
+  ProductWithDetails,
+} from "@/types/product";
 
 type ProductRow = {
   id: number;
@@ -13,6 +19,33 @@ type ProductRow = {
   is_featured: number;
 };
 
+type ProductDetailRow = {
+  story: string;
+  package_contents: string;
+  materials: string;
+  dimensions: string;
+  usage_tips: string;
+};
+
+type ProductReviewRow = {
+  id: number;
+  user_name: string;
+  rating: number;
+  comment: string;
+  photo_url: string | null;
+  created_at: string;
+};
+
+type ProductImageRow = {
+  id: number;
+  color_name: string;
+  image_url: string;
+};
+
+function splitList(value: string) {
+  return value.split("|").filter(Boolean);
+}
+
 function mapProduct(row: ProductRow): Product {
   return {
     id: row.id,
@@ -24,6 +57,41 @@ function mapProduct(row: ProductRow): Product {
     stock: row.stock,
     imageUrl: row.image_url,
     isFeatured: Boolean(row.is_featured),
+  };
+}
+
+function mapDetail(
+  row: ProductDetailRow | undefined,
+): ProductDetailInfo | null {
+  if (!row) {
+    return null;
+  }
+
+  return {
+    story: row.story,
+    packageContents: splitList(row.package_contents),
+    materials: splitList(row.materials),
+    dimensions: splitList(row.dimensions),
+    usageTips: splitList(row.usage_tips),
+  };
+}
+
+function mapReview(row: ProductReviewRow): ProductReview {
+  return {
+    id: row.id,
+    userName: row.user_name,
+    rating: row.rating,
+    comment: row.comment,
+    photoUrl: row.photo_url,
+    createdAt: row.created_at,
+  };
+}
+
+function mapImage(row: ProductImageRow): ProductImage {
+  return {
+    id: row.id,
+    colorName: row.color_name,
+    imageUrl: row.image_url,
   };
 }
 
@@ -57,4 +125,61 @@ export function getFeaturedProducts() {
 
 export function getProductById(id: number) {
   return getProducts().find((product) => product.id === id);
+}
+
+export function getProductWithDetailsById(
+  id: number,
+): ProductWithDetails | null {
+  const product = getProductById(id);
+
+  if (!product) {
+    return null;
+  }
+
+  const detailRow = db
+    .prepare(
+      `
+      SELECT story, package_contents, materials, dimensions, usage_tips
+      FROM product_details
+      WHERE product_id = ?
+      `,
+    )
+    .get(id) as ProductDetailRow | undefined;
+
+  const reviewRows = db
+    .prepare(
+      `
+      SELECT id, user_name, rating, comment, photo_url, created_at
+      FROM product_reviews
+      WHERE product_id = ?
+      ORDER BY created_at DESC
+      `,
+    )
+    .all(id) as ProductReviewRow[];
+
+  const imageRows = db
+    .prepare(
+      `
+      SELECT id, color_name, image_url
+      FROM product_images
+      WHERE product_id = ?
+      ORDER BY id ASC
+      `,
+    )
+    .all(id) as ProductImageRow[];
+
+  const reviews = reviewRows.map(mapReview);
+  const averageRating =
+    reviews.length > 0
+      ? reviews.reduce((total, review) => total + review.rating, 0) /
+        reviews.length
+      : 0;
+
+  return {
+    ...product,
+    detailInfo: mapDetail(detailRow),
+    reviews,
+    images: imageRows.map(mapImage),
+    averageRating,
+  };
 }
