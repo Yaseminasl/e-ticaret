@@ -31,7 +31,7 @@ export default function ProfilePage() {
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <section className="mx-auto max-w-3xl px-6 py-12">
         <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-semibold uppercase text-emerald-700">
+          <p className="text-sm font-semibold uppercase text-[#338caa]">
             Profil
           </p>
           <h1 className="mt-3 text-3xl font-bold">Hesap Bilgilerim</h1>
@@ -58,7 +58,7 @@ export default function ProfilePage() {
             onClick={() => {
               void logout();
             }}
-            className="mt-6 rounded-md bg-slate-950 px-5 py-3 font-semibold text-white hover:bg-slate-800"
+            className="mt-6 rounded-md bg-[#338caa] px-5 py-3 font-bold text-white shadow-sm transition hover:bg-[#9368B0] dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
           >
             Çıkış Yap
           </button>

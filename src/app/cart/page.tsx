@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useCart } from "@/hooks/useCart";
-import type { Product } from "@/types/product";
 import Image from "next/image";
+import { useCart } from "@/hooks/useCart";
 import { getProductImageUrl } from "@/lib/image-url";
+import type { Product } from "@/types/product";
 
 type CartProduct = Product & {
   quantity: number;
@@ -62,29 +62,33 @@ export default function CartPage() {
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <section className="mx-auto max-w-6xl px-6 py-12">
         <div className="mb-8">
-          <p className="text-sm font-semibold uppercase text-emerald-700">
+          <p className="text-sm font-extrabold uppercase tracking-wide text-[#338caa]">
             Sepet
           </p>
-          <h1 className="mt-3 text-3xl font-bold">Alışveriş Sepeti</h1>
-          <p className="mt-3 text-slate-600">
+          <h1 className="mt-3 text-3xl font-extrabold text-slate-950 dark:text-white">
+            Alışveriş Sepeti
+          </h1>
+          <p className="mt-3 max-w-2xl text-[#6A7F95] dark:text-slate-300">
             Sepetindeki ürünleri kontrol et, miktarları düzenle ve siparişe
             devam et.
           </p>
         </div>
 
         {isLoadingProducts ? (
-          <div className="rounded-lg border border-slate-200 bg-white p-10 text-center text-slate-600">
+          <div className="rounded-lg border border-[#D7BDF8] bg-white/80 p-10 text-center text-[#6A7F95] shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
             Sepet yükleniyor...
           </div>
         ) : cartProducts.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center">
-            <h2 className="text-xl font-semibold">Sepetin boş</h2>
-            <p className="mt-2 text-slate-600">
+          <div className="rounded-lg border border-dashed border-[#D7BDF8] bg-white/80 p-10 text-center shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900">
+            <h2 className="text-xl font-extrabold text-slate-950 dark:text-white">
+              Sepetin boş
+            </h2>
+            <p className="mt-2 text-[#6A7F95] dark:text-slate-300">
               Ürünleri inceleyip sepetine ekleyerek alışverişe başlayabilirsin.
             </p>
             <Link
               href="/products"
-              className="mt-6 inline-flex rounded-md bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700"
+              className="mt-6 inline-flex rounded-md bg-[#338caa] px-5 py-3 font-bold text-white shadow-sm transition hover:bg-[#2C7892]"
             >
               Ürünlere Git
             </Link>
@@ -95,7 +99,7 @@ export default function CartPage() {
               {cartProducts.map((product) => (
                 <article
                   key={product.id}
-                  className="grid gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-[140px_1fr]"
+                  className="grid gap-4 rounded-lg border border-[#D7BDF8] bg-gradient-to-r from-white/85 via-[#FFF7E8]/75 to-[#EAF7FF]/85 p-4 shadow-sm backdrop-blur sm:grid-cols-[140px_1fr] dark:border-slate-700 dark:bg-none dark:bg-slate-900"
                 >
                   <Image
                     src={getProductImageUrl(
@@ -110,13 +114,13 @@ export default function CartPage() {
 
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p className="text-sm text-emerald-700">
+                      <p className="inline-flex rounded-full bg-[#D7ECFF] px-3 py-1 text-xs font-bold text-[#338caa]">
                         {product.category}
                       </p>
-                      <h2 className="mt-1 text-lg font-semibold">
+                      <h2 className="mt-2 text-lg font-extrabold text-slate-950 dark:text-white">
                         {product.name}
                       </h2>
-                      <p className="mt-2 font-bold">
+                      <p className="mt-2 font-extrabold text-[#338caa] dark:text-[#9AD7F5]">
                         {product.price.toLocaleString("tr-TR", {
                           style: "currency",
                           currency: "TRY",
@@ -130,12 +134,12 @@ export default function CartPage() {
                         onClick={() =>
                           updateQuantity(product.id, product.quantity - 1)
                         }
-                        className="h-9 w-9 rounded-md border border-slate-300 font-bold hover:bg-slate-100"
+                        className="h-9 w-9 rounded-md border border-[#BDE0FE] bg-white/80 font-bold text-[#338caa] shadow-sm transition hover:bg-[#D7ECFF] dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
                       >
                         -
                       </button>
 
-                      <span className="w-8 text-center font-semibold">
+                      <span className="w-8 text-center font-extrabold text-slate-950 dark:text-white">
                         {product.quantity}
                       </span>
 
@@ -144,7 +148,7 @@ export default function CartPage() {
                         onClick={() =>
                           updateQuantity(product.id, product.quantity + 1)
                         }
-                        className="h-9 w-9 rounded-md border border-slate-300 font-bold hover:bg-slate-100"
+                        className="h-9 w-9 rounded-md border border-[#BDE0FE] bg-white/80 font-bold text-[#338caa] shadow-sm transition hover:bg-[#D7ECFF] dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:hover:bg-slate-800"
                       >
                         +
                       </button>
@@ -152,7 +156,7 @@ export default function CartPage() {
                       <button
                         type="button"
                         onClick={() => removeFromCart(product.id)}
-                        className="rounded-md px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                        className="rounded-md px-3 py-2 text-sm font-bold text-[#D9534F] transition hover:bg-[#FADADD]"
                       >
                         Sil
                       </button>
@@ -162,18 +166,22 @@ export default function CartPage() {
               ))}
             </div>
 
-            <aside className="h-fit rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 className="text-xl font-semibold">Sepet Özeti</h2>
+            <aside className="h-fit rounded-lg border border-[#D7BDF8] bg-white/80 p-5 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900">
+              <h2 className="text-xl font-extrabold text-slate-950 dark:text-white">
+                Sepet Özeti
+              </h2>
 
-              <div className="mt-5 space-y-3 text-sm text-slate-600">
-                <div className="flex justify-between">
+              <div className="mt-5 space-y-3 text-sm text-[#6A7F95] dark:text-slate-300">
+                <div className="flex justify-between rounded-md bg-gradient-to-r from-[#FADADD] to-[#D7ECFF] px-4 py-3 dark:bg-none dark:bg-slate-950">
                   <span>Toplam ürün</span>
-                  <span>{totalItems}</span>
+                  <span className="font-bold text-slate-950 dark:text-white">
+                    {totalItems}
+                  </span>
                 </div>
 
-                <div className="flex justify-between">
+                <div className="flex justify-between rounded-md bg-gradient-to-r from-[#FFF2D8] to-[#E6F6E8] px-4 py-3 dark:bg-none dark:bg-slate-950">
                   <span>Ara toplam</span>
-                  <span>
+                  <span className="font-bold text-slate-950 dark:text-white">
                     {totalPrice.toLocaleString("tr-TR", {
                       style: "currency",
                       currency: "TRY",
@@ -181,8 +189,8 @@ export default function CartPage() {
                   </span>
                 </div>
 
-                <div className="border-t border-slate-200 pt-3">
-                  <div className="flex justify-between text-base font-bold text-slate-950">
+                <div className="border-t border-[#D7BDF8] pt-3 dark:border-slate-700">
+                  <div className="flex justify-between text-base font-extrabold text-slate-950 dark:text-white">
                     <span>Genel toplam</span>
                     <span>
                       {totalPrice.toLocaleString("tr-TR", {
@@ -196,7 +204,7 @@ export default function CartPage() {
 
               <Link
                 href="/checkout"
-                className="mt-6 block rounded-md bg-slate-950 px-5 py-3 text-center font-semibold text-white hover:bg-slate-800"
+                className="mt-6 block rounded-md bg-[#338caa] px-5 py-3 text-center font-bold text-white shadow-sm transition hover:bg-[#2C7892]"
               >
                 Siparişe Devam Et
               </Link>

@@ -25,31 +25,37 @@ export default function OrdersPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
+      {" "}
+      6697a8
       <section className="mx-auto max-w-6xl px-6 py-12">
         <div className="mb-8">
-          <p className="text-sm font-semibold uppercase text-emerald-700">
+          <p className="text-sm font-extrabold uppercase tracking-wide text-[#338caa]">
             Siparişlerim
           </p>
-          <h1 className="mt-3 text-3xl font-bold">Sipariş Geçmişi</h1>
-          <p className="mt-3 text-slate-600">
+          <h1 className="mt-3 text-3xl font-extrabold text-slate-950 dark:text-white">
+            Sipariş Geçmişi
+          </h1>
+          <p className="mt-3 max-w-2xl text-[#6697a8] dark:text-slate-300">
             Tamamladığın siparişleri ve sipariş durumlarını buradan takip
             edebilirsin.
           </p>
         </div>
 
         {isLoading ? (
-          <div className="rounded-lg border border-slate-200 bg-white p-10 text-center text-slate-600">
+          <div className="rounded-lg border border-[#D7BDF8] bg-white/80 p-10 text-center text-[#6A7F95] shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
             Siparişler yükleniyor...
           </div>
         ) : orders.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-slate-300 bg-white p-10 text-center">
-            <h2 className="text-xl font-semibold">Henüz siparişin yok</h2>
-            <p className="mt-2 text-slate-600">
+          <div className="rounded-lg border border-dashed border-[#D7BDF8] bg-white/80 p-10 text-center shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900">
+            <h2 className="text-xl font-extrabold text-slate-950 dark:text-white">
+              Henüz siparişin yok
+            </h2>
+            <p className="mt-2 text-[#6A7F95] dark:text-slate-300">
               Sipariş geçmişini görmek için önce alışverişini tamamlamalısın.
             </p>
             <Link
               href="/products"
-              className="mt-6 inline-flex rounded-md bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700"
+              className="mt-6 inline-flex rounded-md bg-[#338caa] px-5 py-3 font-bold text-white shadow-sm transition hover:bg-[#2C7892]"
             >
               Ürünlere Git
             </Link>
@@ -59,26 +65,26 @@ export default function OrdersPage() {
             {orders.map((order) => (
               <article
                 key={order.id}
-                className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm"
+                className="rounded-lg border border-[#D7BDF8] bg-white/80 p-5 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900"
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-[#6A7F95] dark:text-slate-400">
                       {new Date(order.createdAt).toLocaleDateString("tr-TR")}
                     </p>
-                    <h2 className="mt-1 text-xl font-semibold">
+                    <h2 className="mt-1 text-xl font-extrabold text-slate-950 dark:text-white">
                       {order.orderNumber}
                     </h2>
-                    <p className="mt-2 text-sm text-slate-600">
+                    <p className="mt-2 text-sm text-[#6A7F95] dark:text-slate-300">
                       Teslimat: {order.shippingName} - {order.shippingPhone}
                     </p>
                   </div>
 
                   <div className="text-left sm:text-right">
-                    <p className="rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+                    <p className="rounded-full bg-[#D7ECFF] px-3 py-1 text-sm font-bold text-[#338caa]">
                       {order.status}
                     </p>
-                    <p className="mt-3 text-lg font-bold">
+                    <p className="mt-3 text-lg font-extrabold text-slate-950 dark:text-white">
                       {order.totalAmount.toLocaleString("tr-TR", {
                         style: "currency",
                         currency: "TRY",
@@ -86,25 +92,27 @@ export default function OrdersPage() {
                     </p>
                     <Link
                       href={`/orders/${order.id}`}
-                      className="mt-3 inline-flex rounded-md bg-slate-950 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+                      className="mt-3 inline-flex rounded-md bg-[#338caa] px-4 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-[#2C7892]"
                     >
                       Detay
                     </Link>
                   </div>
                 </div>
 
-                <div className="mt-5 border-t border-slate-200 pt-4">
-                  <h3 className="font-semibold">Ürünler</h3>
-                  <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                <div className="mt-5 border-t border-[#D7BDF8] pt-4 dark:border-slate-700">
+                  <h3 className="font-extrabold text-slate-950 dark:text-white">
+                    Ürünler
+                  </h3>
+                  <ul className="mt-3 space-y-2 text-sm text-[#6A7F95] dark:text-slate-300">
                     {order.items.map((item) => (
                       <li
                         key={`${order.id}-${item.productId}`}
-                        className="flex justify-between"
+                        className="flex justify-between rounded-md bg-gradient-to-r from-[#FADADD] via-[#FFF2D8] to-[#D7ECFF] px-4 py-3 dark:bg-none dark:bg-slate-950"
                       >
                         <span>
                           {item.name} x {item.quantity}
                         </span>
-                        <span>
+                        <span className="font-bold text-slate-950 dark:text-white">
                           {item.lineTotal.toLocaleString("tr-TR", {
                             style: "currency",
                             currency: "TRY",
