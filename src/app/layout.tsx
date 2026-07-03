@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Header } from "@/components/Header";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { Footer } from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,9 +18,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "E-Ticaret Mezuniyet Projesi",
+  title: "Yasomanya | Modern E-Ticaret Deneyimi",
   description:
-    "Next.js, TypeScript, Tailwind CSS ve SQLite ile e-ticaret uygulaması.",
+    "Yasomanya, Next.js, TypeScript, Tailwind CSS ve SQLite ile geliÅŸtirilen modern bir e-ticaret uygulamasÄ±.",
 };
 
 export default function RootLayout({
@@ -38,6 +39,7 @@ export default function RootLayout({
             <CartProvider>
               <Header />
               {children}
+              <Footer />
             </CartProvider>
           </AuthProvider>
         </ThemeProvider>

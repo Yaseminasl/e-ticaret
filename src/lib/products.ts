@@ -183,3 +183,43 @@ export function getProductWithDetailsById(
     averageRating,
   };
 }
+
+export type CreateProductReviewInput = {
+  productId: number;
+  userName: string;
+  rating: number;
+  comment: string;
+};
+
+export function createProductReview(
+  input: CreateProductReviewInput,
+): ProductReview {
+  const createdAt = new Date().toISOString();
+
+  const result = db
+    .prepare(
+      `
+      INSERT INTO product_reviews
+        (product_id, user_name, rating, comment, photo_url, created_at)
+      VALUES
+        (?, ?, ?, ?, ?, ?)
+      `,
+    )
+    .run(
+      input.productId,
+      input.userName,
+      input.rating,
+      input.comment,
+      null,
+      createdAt,
+    );
+
+  return {
+    id: Number(result.lastInsertRowid),
+    userName: input.userName,
+    rating: input.rating,
+    comment: input.comment,
+    photoUrl: null,
+    createdAt,
+  };
+}

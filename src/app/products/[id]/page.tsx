@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { AddToCartButton } from "@/components/AddToCartButton";
 import { getProductImageUrl } from "@/lib/image-url";
 import { getProductWithDetailsById } from "@/lib/products";
+import { ReviewForm } from "@/components/ReviewForm";
 
 type ProductDetailPageProps = {
   params: Promise<{
@@ -69,9 +70,9 @@ export default async function ProductDetailPage({
       <section className="mx-auto max-w-6xl px-6 py-12">
         <Link
           href="/products"
-          className="text-sm font-medium text-emerald-700 hover:text-emerald-800"
+          className="inline-flex items-center rounded-md bg-gradient-to-r from-[#338caa] via-[#8E6AD8] to-[#DB2777] px-5 py-3 text-base font-bold text-white shadow-md transition hover:brightness-110 hover:shadow-lg dark:from-[#7F1D1D] dark:via-[#BE123C] dark:to-[#DB2777]"
         >
-          Ürünlere geri dön
+          ← Ürünlere Geri Dön
         </Link>
 
         <div className="mt-6 grid gap-10 lg:grid-cols-[1fr_420px]">
@@ -259,6 +260,7 @@ export default async function ProductDetailPage({
                 />
               </div>
             ) : null}
+            <ReviewForm productId={product.id} />
           </aside>
         </div>
       </section>

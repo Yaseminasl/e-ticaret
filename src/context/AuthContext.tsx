@@ -21,12 +21,20 @@ type LoginInput = {
   password: string;
 };
 
+type UpdateProfileInput = {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+};
+
 type AuthContextValue = {
   user: User | null;
   isLoading: boolean;
   register: (input: RegisterInput) => Promise<void>;
   login: (input: LoginInput) => Promise<void>;
   logout: () => Promise<void>;
+  updateProfile: (input: UpdateProfileInput) => Promise<void>;
 };
 
 type AuthResponse = {
@@ -90,6 +98,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(data.user);
   }, []);
 
+  const updateProfile = useCallback(async (input: UpdateProfileInput) => {
+    const response = await fetch("/api/auth/me", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(input),
+    });
+
+    const data = await parseAuthResponse(response);
+    setUser(data.user);
+  }, []);
+
   const logout = useCallback(async () => {
     await fetch("/api/auth/logout", {
       method: "POST",
@@ -105,8 +126,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       register,
       login,
       logout,
+      updateProfile,
     }),
-    [user, isLoading, register, login, logout],
+    [user, isLoading, register, login, logout, updateProfile],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

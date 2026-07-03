@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
@@ -29,7 +29,7 @@ export function Header() {
           href="/"
           className="rounded-md bg-gradient-to-r from-pink-500 via-violet-500 to-sky-500 bg-clip-text text-xl font-extrabold text-transparent dark:bg-none dark:text-[#F5D0D8]"
         >
-          E-Ticaret
+          Yasomanya
         </Link>
 
         <div className="flex items-center gap-4 text-sm font-medium text-slate-700 dark:text-[#F8FAFC]">
