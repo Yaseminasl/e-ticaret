@@ -61,7 +61,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     async function loadCurrentUser() {
       try {
-        const response = await fetch("/api/auth/me");
+        const response = await fetch("/api/auth/me", {
+          credentials: "include",
+        });
         const data = await parseAuthResponse(response);
         setUser(data.user);
       } finally {
@@ -75,6 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = useCallback(async (input: RegisterInput) => {
     const response = await fetch("/api/auth/register", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -88,6 +91,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (input: LoginInput) => {
     const response = await fetch("/api/auth/login", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -101,6 +105,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const updateProfile = useCallback(async (input: UpdateProfileInput) => {
     const response = await fetch("/api/auth/me", {
       method: "PATCH",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -114,6 +119,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = useCallback(async () => {
     await fetch("/api/auth/logout", {
       method: "POST",
+      credentials: "include",
     });
 
     setUser(null);
