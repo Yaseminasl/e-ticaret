@@ -62,7 +62,7 @@ export default function CartPage() {
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <section className="mx-auto max-w-6xl px-6 py-12">
         <div className="mb-8">
-          <p className="text-sm font-extrabold uppercase tracking-wide text-[#338caa] dark:text-[#a32c2c]">
+          <p className="text-sm font-extrabold uppercase tracking-wide text-[#338caa] dark:text-[#F5D0D8]">
             Sepet
           </p>
           <h1 className="mt-3 text-3xl font-extrabold text-slate-950 dark:text-white">
