@@ -20,12 +20,12 @@ https://github.com/Yaseminasl/e-ticaret
 
 ## Proje Tanıtım Videosu
 
-3-5 dakikalık proje tanıtım videosu Google Drive üzerinden paylaşılacaktır.
+Proje tanıtım videosu Google Drive üzerinden paylaşılacaktır.
 
 Video linki:
 
 ```text
-Google Drive video linki buraya eklenecek.
+https://drive.google.com/file/d/18mhA3IinKdgxvgMNPR-NVWSblzU1yaA-/view?usp=sharing
 ```
 
 ## Demo Kullanım
