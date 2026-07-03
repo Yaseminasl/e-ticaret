@@ -92,7 +92,7 @@ export default function ContactPage() {
                   E-posta
                 </p>
                 <p className="mt-1 font-bold text-slate-950 dark:text-white">
-                  destek@eticaret-demo.com
+                  destek@yasomanya.com
                 </p>
               </div>
 
