@@ -9,15 +9,15 @@ export default function ProductsPage() {
     <main className="min-h-screen bg-slate-50 text-slate-950">
       <section className="mx-auto max-w-6xl px-6 py-12">
         <div className="mb-8">
-          <p className="text-sm font-extrabold uppercase tracking-wide text-[#7C3AED] dark:text-[#F5D0D8]">
+          <p className="text-sm font-extrabold uppercase tracking-wide text-[#338caa] dark:text-[#F5D0D8]">
             Ürünler
           </p>
 
-          <h1 className="mt-3 text-3xl font-extrabold text-[#8E6AD8] dark:text-[#F8FAFC]">
+          <h1 className="mt-3 text-3xl font-extrabold text-slate-950 dark:text-[#F8FAFC]">
             Tüm Ürünler
           </h1>
 
-          <p className="mt-3 max-w-2xl text-base font-medium leading-7 text-[#B08CF5] dark:text-[#E5E7EB]">
+          <p className="mt-3 max-w-2xl text-base font-medium leading-7 text-[#6697a8] dark:text-[#E5E7EB]">
             Ürünleri adına göre ara, kategoriyle filtrele ve fiyata göre sırala.
           </p>
         </div>
