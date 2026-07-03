@@ -1,36 +1,178 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Yasomanya
 
-## Getting Started
+Yasomanya, Next.js, TypeScript, Tailwind CSS ve SQLite kullanılarak geliştirilmiş modern bir e-ticaret mezuniyet projesidir.
 
-First, run the development server:
+## Proje Özeti
+
+Bu proje; kullanıcıların ürünleri inceleyebildiği, kategoriye göre filtreleyebildiği, sepete ürün ekleyebildiği, ödeme simülasyonu yapabildiği ve sipariş geçmişini takip edebildiği bir e-ticaret uygulamasıdır.
+
+## Canlı Demo
+
+Projeye aşağıdaki bağlantıdan ulaşabilirsiniz:
+
+https://yasomanya.vercel.app/
+
+## GitHub Repository
+
+Proje kaynak kodlarına aşağıdaki bağlantıdan ulaşabilirsiniz:
+
+https://github.com/Yaseminasl/e-ticaret
+
+## Proje Tanıtım Videosu
+
+3-5 dakikalık proje tanıtım videosu Google Drive üzerinden paylaşılacaktır.
+
+Video linki:
+
+```text
+Google Drive video linki buraya eklenecek.
+```
+
+## Demo Kullanım
+
+Uygulamada kayıt ekranı üzerinden yeni kullanıcı hesabı oluşturulabilir. Bu nedenle sabit bir demo hesap paylaşılmamıştır.
+
+Kullanıcı kayıt olduktan sonra giriş yapabilir, profil bilgilerini düzenleyebilir, ürünleri sepete ekleyebilir, ödeme simülasyonu yapabilir ve sipariş geçmişini görüntüleyebilir.
+
+## Kullanılan Teknolojiler
+
+- Next.js App Router
+- React
+- TypeScript
+- Tailwind CSS
+- SQLite
+- React Context API
+- LocalStorage
+- Git ve GitHub
+- Vercel
+
+## Özellikler
+
+- Ana sayfa banner slider
+- Kategori vitrin alanı
+- En beğenilen ürünler bölümü
+- Ürün listeleme
+- Ürün arama, kategori filtreleme ve sıralama
+- Ürün detay sayfası
+- Ürün renk seçenekleri
+- Ürün hikayesi ve teknik detayları
+- Ürün yorumları ve yıldızlı puanlama
+- Sepete ürün ekleme
+- Sepette miktar artırma, azaltma ve ürün silme
+- Sepet toplamı hesaplama
+- Sepet verisini localStorage ile koruma
+- Checkout / ödeme simülasyonu
+- Telefon, kart numarası ve son kullanma tarihi formatlama
+- Sipariş oluşturma
+- Sipariş geçmişi görüntüleme
+- Sipariş detay sayfası
+- Kullanıcı kayıt sistemi
+- Kullanıcı giriş sistemi
+- Oturum yönetimi
+- Korumalı sayfalar
+- Kullanıcı profil sayfası
+- Profil bilgisi düzenleme
+- Telefon ve adres kaydetme
+- Light / Dark tema desteği
+- SSS sayfası
+- İletişim sayfası
+- Kullanım şartları sayfası
+- Responsive tasarım
+- Vercel deployment
+
+## Sayfalar
+
+- `/` Ana sayfa
+- `/products` Ürün listesi
+- `/products/[id]` Ürün detay sayfası
+- `/cart` Sepet
+- `/checkout` Sipariş / ödeme sayfası
+- `/orders` Sipariş geçmişi
+- `/orders/[id]` Sipariş detay sayfası
+- `/login` Giriş
+- `/register` Kayıt
+- `/profile` Profil
+- `/faq` Sık sorulan sorular
+- `/contact` İletişim
+- `/terms` Kullanım şartları
+
+## Veritabanı
+
+Projede SQLite kullanılmıştır. Veritabanı dosyası:
+
+```text
+data/ecommerce.db
+```
+
+Kullanılan temel tablolar:
+
+- users
+- categories
+- products
+- orders
+- order_items
+- product_details
+- product_images
+- product_reviews
+
+## Kurulum
+
+Projeyi yerel ortamda çalıştırmak için önce bağımlılıkları yükleyin:
+
+```bash
+npm install
+```
+
+Geliştirme sunucusunu başlatın:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Tarayıcıda açın:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Veritabanını Yeniden Oluşturma
 
-## Learn More
+SQLite veritabanını yeniden oluşturmak için:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+node scripts/setup-database.mjs
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Test ve Kontrol
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Kod kalitesini kontrol etmek için:
 
-## Deploy on Vercel
+```bash
+npm run lint
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Production build almak için:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+```
+
+## Proje Yapısı
+
+```text
+src/
+  app/
+  components/
+  context/
+  hooks/
+  lib/
+  types/
+public/
+  products/
+data/
+scripts/
+```
+
+## Geliştirici
+
+Yasemin Aslan
